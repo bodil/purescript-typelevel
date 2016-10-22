@@ -1,0 +1,28 @@
+{
+  "name": "purescript-typelevel",
+  "version": "0.0.0",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bodil/purescript-typelevel.git"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-prelude": "^2.1.0",
+    "purescript-tuples": "^3.0.0",
+    "purescript-partial": "^1.1.2",
+    "purescript-foldable-traversable": "^2.0.0",
+    "purescript-maybe": "^2.0.0",
+    "purescript-arrays": "^3.0.0",
+    "purescript-unfoldable": "^2.0.0"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^2.0.0",
+    "purescript-test-unit": "^10.0.0"
+  }
+}
