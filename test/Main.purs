@@ -18,6 +18,27 @@ d234 = undefined
 
 main :: forall e. Eff (console :: CONSOLE, testOutput :: TESTOUTPUT, avar :: AVAR | e) Unit
 main = runTest do
+  suite "basic digits" do
+    test "0" do
+      equal 0 $ toInt d0
+    test "1" do
+      equal 1 $ toInt d1
+    test "2" do
+      equal 2 $ toInt d2
+    test "3" do
+      equal 3 $ toInt d3
+    test "4" do
+      equal 4 $ toInt d4
+    test "5" do
+      equal 5 $ toInt d5
+    test "6" do
+      equal 6 $ toInt d6
+    test "7" do
+      equal 7 $ toInt d7
+    test "8" do
+      equal 8 $ toInt d8
+    test "9" do
+      equal 9 $ toInt d9
   suite "succ" do
     test "succ 2" do
       equal 3 $ toInt $ succ d2
