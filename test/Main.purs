@@ -4,10 +4,10 @@ import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Tuple (Tuple(Tuple))
-import Data.Typelevel.Num (d9, d6, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
+import Data.Typelevel.Num (eq, gteq, gt, lteq, lt, d7, d6, d4, d1, d0, d9, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
 import Data.Typelevel.Undefined (undefined)
 import Data.Typelevel.Vec (slice, tail, drop, take, lengthT, concat, replicate, (+>), empty)
-import Prelude (show, ($), Unit, bind)
+import Prelude (unit, show, ($), Unit, bind)
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
 import Test.Unit.Console (TESTOUTPUT)
@@ -72,6 +72,17 @@ main = runTest do
       equal "LT" $ show $ trich d23 d234
     test "234 > 23" do
       equal "GT" $ show $ trich d234 d23
+  suite "comparisons" do
+    test "0 < 5" do
+      equal unit $ d0 `lt` d5
+    test "0 <= 5" do
+      equal unit $ d0 `lteq` d5
+    test "5 > 0" do
+      equal unit $ d5 `gt` d0
+    test "5 >= 0" do
+      equal unit $ d5 `gteq` d0
+    test "0 = 0" do
+      equal unit $ d0 `eq` d0
   suite "add" do
     test "2 + 3" do
       equal 5 $ toInt $ add d2 d3

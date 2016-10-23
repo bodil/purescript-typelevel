@@ -338,7 +338,7 @@ gteq :: forall x y. GtEq x y => x -> y -> Unit
 gteq _ _ = undefined
 
 class LtEq x y
-instance trichLtEq :: (Succ x' x, Trich x' y LT) => LtEq x y
+instance trichLtEq :: (Succ y y', Trich x y' LT) => LtEq x y
 
 lteq :: forall x y. LtEq x y => x -> y -> Unit
 lteq _ _ = undefined
