@@ -1,8 +1,8 @@
 # purescript-typelevel
 
-Type level natural numbers, booleans and sized vectors.
+Type level natural numbers and booleans.
 
-This package is a direct port of the Haskell [type-level](https://github.com/forsyde/type-level) package by Acosta, Kiselyov, Jeltsch et al, with the addition of the `Vec` datatype. The original BSD 3-clause licence is preserved for this derivative work.
+This package is a direct port of the Haskell [type-level](https://github.com/forsyde/type-level) package by Acosta, Kiselyov, Jeltsch et al. The original BSD 3-clause licence is preserved for this derivative work.
 
 * [API docs on Pursuit](http://pursuit.purescript.org/packages/purescript-typelevel/)
 
@@ -19,12 +19,6 @@ You can express arithmetic operators as type class constraints on type level num
 Most of these constraints are fully relational, so that (even though a `Sub` constraint exists) you could make `c` the result of subtracting `b` from `a` by saying `∀ a b c. (Add c b a) ⇒ a → b → c`.
 
 Note that while most of the arithmetic operations are reasonably performant, division (`DivMod` and friends) is not: division with a three digit divisor takes more than five minutes to type check on my machine.
-
-## Sized Vectors
-
-The sized vector datatype `(Nat s) ⇒ Vec s a` is implemented as a newtype wrapper around an `Array`, but has a known size at the type level. Thus, the type checker is able to catch things like index out of bounds errors instead of forcing you to deal with `Maybe` values. Of course, this comes with its own set of limitations: operations where the size of a resulting vector can't be determined from the input types are impossible, including classics like `bind` and `filter`. However, you do at least have `Functor`, `Applicative` and `Foldable` implementations available, in addition to the full set of equivalents to `Array` operations allowed by `Vec`'s constraints.
-
-You can construct `Vec`s in only two ways: through consing `1 +> 2 +> 3 +> empty` or through factory functions `singleton 1` and `replicate d5 "this string repeated 5 times"`. Note the `d5` in the last example: `Vec` operations always take type level numbers where `Array` operations would take integer values.
 
 ## LICENCE
 
