@@ -4,9 +4,9 @@ import Control.Monad.Aff.AVar (AVAR)
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Console (CONSOLE)
 import Data.Tuple (Tuple(Tuple))
-import Data.Typelevel.Num (trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, d3, d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
+import Data.Typelevel.Num (d9, d6, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
 import Data.Typelevel.Undefined (undefined)
-import Data.Typelevel.Vec (tail, head, drop, take, lengthT, concat, replicate, (+>), empty)
+import Data.Typelevel.Vec (slice, tail, drop, take, lengthT, concat, replicate, (+>), empty)
 import Prelude (show, ($), Unit, bind)
 import Test.Unit (suite, test)
 import Test.Unit.Assert (equal)
@@ -107,6 +107,7 @@ main = runTest do
   suite "vec" do
     let vec1 = replicate d2 1
         vec2 = replicate d3 2
+        vec3 = replicate d9 3
     test "cons length" do
       equal 3 $ toInt $ lengthT $ 1 +> 2 +> 3 +> empty
     test "replicate length" do
@@ -119,3 +120,5 @@ main = runTest do
       equal 1 $ toInt $ lengthT (drop d2 vec2)
     test "tail length" do
       equal 1 $ toInt $ lengthT (tail vec1)
+    test "slice length" do
+      equal 3 $ toInt $ lengthT (slice d3 d6 vec3)

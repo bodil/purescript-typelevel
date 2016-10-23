@@ -84,7 +84,7 @@ insert a (Vec v) = Vec $ Array.insert a v
 insertBy :: forall s1 s2 a. (Nat s1, Succ s1 s2) => (a -> a -> Ordering) -> a -> Vec s1 a -> Vec s2 a
 insertBy f a (Vec v) = Vec $ Array.insertBy f a v
 
-slice :: forall i1 i2 s1 s2 a. (Nat i1, Nat i2, Nat s1, Lt i1 s1, Lt i2 s1, LtEq i1 i2, Sub i2 i1 s2) => i1 -> i2 -> Vec s1 a -> Vec s2 a
+slice :: forall i1 i2 s1 s2 a. (Nat i1, Nat i2, Nat s1, LtEq i1 s1, LtEq i2 s1, LtEq i1 i2, Sub i2 i1 s2) => i1 -> i2 -> Vec s1 a -> Vec s2 a
 slice i1 i2 (Vec xs) = Vec $ Array.slice (toInt i1) (toInt i2) xs
 
 take :: forall c s a. (Nat c, Nat s, LtEq c s) => c -> Vec s a -> Vec c a
