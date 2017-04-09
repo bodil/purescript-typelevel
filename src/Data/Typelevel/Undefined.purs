@@ -1,3 +1,7 @@
 module Data.Typelevel.Undefined (undefined) where
 
-foreign import undefined :: forall a. a
+import Data.Unit (unit)
+import Unsafe.Coerce (unsafeCoerce)
+
+undefined :: ∀ a. a
+undefined = unsafeCoerce unit
