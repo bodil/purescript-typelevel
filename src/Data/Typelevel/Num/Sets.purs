@@ -53,7 +53,7 @@ instance posPosD7 :: Pos x => Pos (x :* D7)
 instance posPosD8 :: Pos x => Pos (x :* D8)
 instance posPosD9 :: Pos x => Pos (x :* D9)
 
-subLastDec :: forall x d. (Nat (x :* d), Nat x) => x :* d -> Int
+subLastDec :: forall x d. Nat (x :* d) => Nat x => x :* d -> Int
 subLastDec = div10Dec >>> toInt >>> (10 * _)
 
 div10Dec :: forall x d. Nat (x :* d) => x :* d -> x
