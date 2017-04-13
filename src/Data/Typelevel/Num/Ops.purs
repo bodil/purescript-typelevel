@@ -177,15 +177,8 @@ trich :: forall x y r. Trich x y r => x -> y -> r
 trich _ _ = undefined
 
 instance trichD0D0 :: Trich D0 D0 EQ
-instance trichD0D1 :: Trich D0 D1 LT
-instance trichD0D2 :: Trich D0 D2 LT
-instance trichD0D3 :: Trich D0 D3 LT
-instance trichD0D4 :: Trich D0 D4 LT
-instance trichD0D5 :: Trich D0 D5 LT
-instance trichD0D6 :: Trich D0 D6 LT
-instance trichD0D7 :: Trich D0 D7 LT
-instance trichD0D8 :: Trich D0 D8 LT
-instance trichD0D9 :: Trich D0 D9 LT
+instance trichD0Dx :: Pos r => Trich D0 r LT
+instance trichDxD0 :: Pos r => Trich r D0 GT
 instance trichD0Dxx :: Pos (yi :* yl) => Trich D0 (yi :* yl) LT
 instance trichDxxD0 :: Pos (yi :* yl) => Trich (yi :* yl) D0 GT
 
