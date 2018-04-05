@@ -3,10 +3,15 @@ module Data.Typelevel.Num.Sets where
 import Prelude
 import Data.Typelevel.Num.Reps (type (:*), D1, D0, D9, D8, D7, D6, D5, D4, D3, D2)
 import Data.Typelevel.Undefined (undefined)
+import Type.Proxy (Proxy)
 import Partial.Unsafe (unsafePartial, unsafeCrashWith)
 
 class Nat n where
   toInt :: n -> Int
+
+-- | Sugar for `toInt`, providing a more intuitive type
+toInt' :: forall n. Nat n => Proxy n -> Int
+toInt' _ = toInt (undefined :: n)
 
 class Nat n <= Pos n
 
