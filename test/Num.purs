@@ -2,8 +2,9 @@ module Test.Num where
 
 import Prelude
 import Data.Tuple (Tuple(..))
-import Data.Typelevel.Num (eq, gteq, gt, lteq, lt, d7, d6, d4, d1, d0, d9, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
+import Data.Typelevel.Num (eq, gteq, gt, lteq, lt, d7, d6, d4, d1, d0, d9, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, toInt', d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
 import Data.Typelevel.Undefined (undefined)
+import Type.Proxy (Proxy(..))
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
@@ -33,6 +34,9 @@ tests = suite "base 10 nats" do
       equal 8 $ toInt d8
     test "9" do
       equal 9 $ toInt d9
+  suite "toInt'" do
+    test "toInt' (Proxy :: Proxy D2)" do
+       equal 2 $ toInt' (Proxy :: Proxy D2)
   suite "succ" do
     test "succ 2" do
       equal 3 $ toInt $ succ d2
