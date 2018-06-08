@@ -30,16 +30,16 @@ class Failure t
 data PredecessorOfZeroError t
 
 instance failurePredOfZeroError :: Failure (PredecessorOfZeroError x) => SuccP (Tuple x x) (Tuple x x) D0 D0 True
-instance succPxiD0xiD1 :: SuccP xi D0 xi D1 False
-instance succPxiD1xiD2 :: SuccP xi D1 xi D2 False
-instance succPxiD2xiD3 :: SuccP xi D2 xi D3 False
-instance succPxiD3xiD4 :: SuccP xi D3 xi D4 False
-instance succPxiD4xiD5 :: SuccP xi D4 xi D5 False
-instance succPxiD5xiD6 :: SuccP xi D5 xi D6 False
-instance succPxiD6xiD7 :: SuccP xi D6 xi D7 False
-instance succPxiD7xiD8 :: SuccP xi D7 xi D8 False
-instance succPxiD8xiD9 :: SuccP xi D8 xi D9 False
-instance succPxiD9iyD0 :: Succ xi yi => SuccP xi D9 yi D0 False
+else instance succPxiD0xiD1 :: SuccP xi D0 xi D1 False
+else instance succPxiD1xiD2 :: SuccP xi D1 xi D2 False
+else instance succPxiD2xiD3 :: SuccP xi D2 xi D3 False
+else instance succPxiD3xiD4 :: SuccP xi D3 xi D4 False
+else instance succPxiD4xiD5 :: SuccP xi D4 xi D5 False
+else instance succPxiD5xiD6 :: SuccP xi D5 xi D6 False
+else instance succPxiD6xiD7 :: SuccP xi D6 xi D7 False
+else instance succPxiD7xiD8 :: SuccP xi D7 xi D8 False
+else instance succPxiD8xiD9 :: SuccP xi D8 xi D9 False
+else instance succPxiD9iyD0 :: Succ xi yi => SuccP xi D9 yi D0 False
 
 -- Add and subtract
 
@@ -124,25 +124,25 @@ mul10 _ = undefined
 
 class (Nat i, Nat x) <= DivMod10 x i l | i l -> x, x -> i l
 instance divMod10D0D0 :: DivMod10 D0 D0 D0
-instance divMod10D1D0 :: DivMod10 D1 D0 D1
-instance divMod10D2D0 :: DivMod10 D2 D0 D2
-instance divMod10D3D0 :: DivMod10 D3 D0 D3
-instance divMod10D4D0 :: DivMod10 D4 D0 D4
-instance divMod10D5D0 :: DivMod10 D5 D0 D5
-instance divMod10D6D0 :: DivMod10 D6 D0 D6
-instance divMod10D7D0 :: DivMod10 D7 D0 D7
-instance divMod10D8D0 :: DivMod10 D8 D0 D8
-instance divMod10D9D0 :: DivMod10 D9 D0 D9
-instance divMod10D1x :: (Nat (D1 :* l)) => DivMod10 (D1 :* l) D1 l
-instance divMod10D2x :: (Nat (D2 :* l)) => DivMod10 (D2 :* l) D2 l
-instance divMod10D3x :: (Nat (D3 :* l)) => DivMod10 (D3 :* l) D3 l
-instance divMod10D4x :: (Nat (D4 :* l)) => DivMod10 (D4 :* l) D4 l
-instance divMod10D5x :: (Nat (D5 :* l)) => DivMod10 (D5 :* l) D5 l
-instance divMod10D6x :: (Nat (D6 :* l)) => DivMod10 (D6 :* l) D6 l
-instance divMod10D7x :: (Nat (D7 :* l)) => DivMod10 (D7 :* l) D7 l
-instance divMod10D8x :: (Nat (D8 :* l)) => DivMod10 (D8 :* l) D8 l
-instance divMod10D9x :: (Nat (D9 :* l)) => DivMod10 (D9 :* l) D9 l
-instance divModIDontEvenAnymore :: (Nat (x :* l), Nat ((x :* l) :* l')) => DivMod10 ((x :* l) :* l') (x :* l) l'
+else instance divMod10D1D0 :: DivMod10 D1 D0 D1
+else instance divMod10D2D0 :: DivMod10 D2 D0 D2
+else instance divMod10D3D0 :: DivMod10 D3 D0 D3
+else instance divMod10D4D0 :: DivMod10 D4 D0 D4
+else instance divMod10D5D0 :: DivMod10 D5 D0 D5
+else instance divMod10D6D0 :: DivMod10 D6 D0 D6
+else instance divMod10D7D0 :: DivMod10 D7 D0 D7
+else instance divMod10D8D0 :: DivMod10 D8 D0 D8
+else instance divMod10D9D0 :: DivMod10 D9 D0 D9
+else instance divMod10D1x :: (Nat (D1 :* l)) => DivMod10 (D1 :* l) D1 l
+else instance divMod10D2x :: (Nat (D2 :* l)) => DivMod10 (D2 :* l) D2 l
+else instance divMod10D3x :: (Nat (D3 :* l)) => DivMod10 (D3 :* l) D3 l
+else instance divMod10D4x :: (Nat (D4 :* l)) => DivMod10 (D4 :* l) D4 l
+else instance divMod10D5x :: (Nat (D5 :* l)) => DivMod10 (D5 :* l) D5 l
+else instance divMod10D6x :: (Nat (D6 :* l)) => DivMod10 (D6 :* l) D6 l
+else instance divMod10D7x :: (Nat (D7 :* l)) => DivMod10 (D7 :* l) D7 l
+else instance divMod10D8x :: (Nat (D8 :* l)) => DivMod10 (D8 :* l) D8 l
+else instance divMod10D9x :: (Nat (D9 :* l)) => DivMod10 (D9 :* l) D9 l
+else instance divModIDontEvenAnymore :: (Nat (x :* l), Nat ((x :* l) :* l')) => DivMod10 ((x :* l) :* l') (x :* l) l'
 
 divMod10 :: forall x r q. DivMod10 x q r => x -> Tuple q r
 divMod10 _ = Tuple undefined undefined

@@ -93,7 +93,7 @@ type D96 = D9 :* D6
 type D97 = D9 :* D7
 type D98 = D9 :* D8
 type D99 = D9 :* D9
-type D100 = D1 :* D0 :* D0
+type D100 = (D1 :* D0) :* D0
 
 d10 :: D10
 d10 = undefined
