@@ -13,13 +13,13 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "^3.0.0",
-    "purescript-tuples": "^4.0.0",
-    "purescript-partial": "^1.2.0",
-    "purescript-typelevel-prelude": "^2.0.0"
+    "purescript-prelude": "^4.0.1",
+    "purescript-tuples": "^5.0.0",
+    "purescript-partial": "^2.0.0",
+    "purescript-typelevel-prelude": "^3.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0",
-    "purescript-test-unit": "^11.0.0"
+    "purescript-psci-support": "^4.0.0",
+    "purescript-test-unit": "^14.0.0"
   }
 }
