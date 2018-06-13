@@ -7,10 +7,10 @@ import Data.Typelevel.Undefined (undefined)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert (equal)
 
-d234 :: D2:*D3:*D4
+d234 :: (D2:*D3):*D4
 d234 = undefined
 
-tests :: ∀ e. TestSuite e
+tests :: TestSuite
 tests = suite "base 10 nats" do
   suite "basic digits" do
     test "0" do
