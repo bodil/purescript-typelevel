@@ -1,6 +1,6 @@
 module Test.Num where
 
-import Prelude
+import Prelude hiding (eq, add, sub, mul)
 import Data.Tuple (Tuple(..))
 import Data.Typelevel.Num (eq, gteq, gt, lteq, lt, d7, d6, d4, d1, d0, d9, d3, trich, mul, sub, d24, type (:*), D4, D3, D2, toInt, toInt', d8, divMod, d2, d5, div10, d23, divMod10, add, pred, succ)
 import Data.Typelevel.Undefined (undefined)
