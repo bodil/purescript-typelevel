@@ -1,27 +1,33 @@
-module Data.Typelevel.Num.Ops where
+module Type.Data.Internal.Num.Ops where
 
-import Data.Tuple (Tuple(Tuple))
-import Data.Typelevel.Bool (True, False)
-import Data.Typelevel.Num.Reps (type (:*), D9, D8, D7, D6, D5, D4, D3, D2, D1, D0)
-import Data.Typelevel.Num.Sets (class Pos, class Nat)
-import Data.Typelevel.Undefined (undefined)
-import Prelude (class Show, Unit)
+import Prelude
+import Type.Data.Internal.Num.Reps
+import Type.Prelude
+
+import Data.Tuple (Tuple(..))
+import Type.Data.Internal.Num.Sets (class Nat, class Pos)
+import Type.Data.Ordering (class Append)
+import Unsafe.Coerce (unsafeCoerce)
+
+undefined :: ∀a. a
+undefined = unsafeCoerce unit
+
 
 -- Successor and predecessor
 
-class (Nat x, Pos y) <= Succ x y | x -> y, y -> x
+class (Nat x, Pos y) <= Succ (x :: Num) (y :: Num) | x -> y, y -> x
 
 instance typelevelSucc :: (Pos y, IsZero y yz, DivMod10 x xi xl, SuccP xi xl yi yl yz, DivMod10 y yi yl) => Succ x y
 
-class SuccP xh xl yh yl yz | xh xl -> yh yl yz, yh yl yz -> xh xl
+class SuccP (xh :: Num) (xl :: Num) (yh :: Num) (yl :: Num) (yz :: Boolean) | xh xl -> yh yl yz, yh yl yz -> xh xl
 
-succ :: forall x y. Succ x y => x -> y
+succ :: forall x y. Succ x y => NumProxy x -> NumProxy y
 succ _ = undefined
 
-class Pos x <= Pred x y | x -> y, y -> x
+class Pos x <= Pred (x :: Num) (y :: Num) | x -> y, y -> x
 instance succPred :: Succ x y => Pred y x
 
-pred :: forall x y. Pred x y => x -> y
+pred :: forall x y. Pred x y => NumProxy x -> NumProxy y
 pred _ = undefined
 
 -- Attempt to fail on predecessor of zero
@@ -29,7 +35,9 @@ pred _ = undefined
 class Failure t
 data PredecessorOfZeroError t
 
-instance failurePredOfZeroError :: Failure (PredecessorOfZeroError x) => SuccP (Tuple x x) (Tuple x x) D0 D0 True
+foreign import data NTuple :: Type -> Type -> Num
+
+instance failurePredOfZeroError :: Failure (PredecessorOfZeroError x) => SuccP (NTuple x x) (NTuple x x) D0 D0 True
 else instance succPxiD0xiD1 :: SuccP xi D0 xi D1 False
 else instance succPxiD1xiD2 :: SuccP xi D1 xi D2 False
 else instance succPxiD2xiD3 :: SuccP xi D2 xi D3 False
@@ -43,7 +51,7 @@ else instance succPxiD9iyD0 :: Succ xi yi => SuccP xi D9 yi D0 False
 
 -- Add and subtract
 
-class Nat x <= AddP x y z | x y -> z, z x -> y
+class Nat x <= AddP (x :: Num) (y :: Num) (z :: Num) | x y -> z, z x -> y
 instance addPD0ToNat :: Nat y => AddP D0 y y
 else instance addPD1ToSucc :: Succ y z => AddP D1 y z
 else instance addPD2ToSucc :: (Succ z z', AddP D1 y z) => AddP D2 y z'
@@ -56,23 +64,23 @@ else instance addPD8ToSucc :: (Succ z z', AddP D7 y z) => AddP D8 y z'
 else instance addPD9ToSucc :: (Succ z z', AddP D8 y z) => AddP D9 y z'
 else instance addPMultiDigits :: (Pos (xi :* xl), Nat z, AddP xi yi zi, DivMod10 y yi yl, AddP xl (zi :* yl) z) => AddP (xi :* xl) y z
 
-class (AddP x y z, AddP y x z) <= Add x y z | x y -> z, z x -> y, z y -> x
+class (AddP x y z, AddP y x z) <= Add (x :: Num) (y :: Num) (z :: Num) | x y -> z, z x -> y, z y -> x
 instance addTypeLevelRelation :: (AddP x y z, AddP y x z) => Add x y z
 
-add :: forall x y z. (Add x y z) => x -> y -> z
+add :: forall x y z. (Add x y z) => NumProxy x -> NumProxy y -> NumProxy z
 add _ _ = undefined
 infixl 6 add as +
 
-class Sub x y z | x y -> z, z x -> y, z y -> x
+class Sub (x :: Num) (y :: Num) (z :: Num) | x y -> z, z x -> y, z y -> x
 instance subtractTypeLevelRelation :: Add x y z => Sub z y x
 
-sub :: forall x y z. (Sub x y z) => x -> y -> z
+sub :: forall x y z. (Sub x y z) => NumProxy x -> NumProxy y -> NumProxy z
 sub _ _ = undefined
 infixl 6 sub as -
 
 -- Multiplication
 
-class (Nat x, Nat y) <= Mul x y z | x y -> z
+class (Nat x, Nat y) <= Mul (x :: Num) (y :: Num) (z :: Num) | x y -> z
 instance mulD0Nat :: Nat y => Mul D0 y D0
 instance mulD1Nat :: Nat y => Mul D1 y y
 instance mulD2Nat :: Add y y z => Mul D2 y z
@@ -85,44 +93,44 @@ instance mulD8Nat :: (Add z y z', Mul D7 y z) => Mul D8 y z'
 instance mulD9Nat :: (Add z y z', Mul D8 y z) => Mul D9 y z'
 instance mulMultidigits :: (Pos (xi :* xl), Nat y, Mul xi y z, Mul10 z z10, Mul xl y dy, Add dy z10 z') => Mul (xi :* xl) y z'
 
-mul :: forall x y z. Mul x y z => x -> y -> z
+mul :: forall x y z. Mul x y z => NumProxy x -> NumProxy y -> NumProxy z
 mul _ _ = undefined
 infixl 7 mul as *
 
 -- -- Division
 
-class (Nat x, Pos y) <= DivMod x y q r | x y -> q r
+class (Nat x, Pos y) <= DivMod (x :: Num) (y :: Num) (q :: Num) (r :: Num) | x y -> q r
 instance divModNatPos :: (Nat x, Pos y, Trich x y cmp, DivModP x y q r cmp) => DivMod x y q r
 
-class (Nat x, Pos y) <= DivModP x y q r cmp | x y cmp -> q r, q r cmp y -> x, q r cmp x -> y
+class (Nat x, Pos y) <= DivModP (x :: Num) (y :: Num) (q :: Num) (r :: Num) (cmp :: Ordering) | x y cmp -> q r, q r cmp y -> x, q r cmp x -> y
 instance divModPD0Nat :: (Nat x, Pos y) => DivModP x y D0 x LT
 instance divModPD0D1 :: (Nat x, Pos y) => DivModP x y D1 D0 EQ
 instance divModPQR :: (Nat x, Pos y, Sub x y x', Pred q q', DivMod x' y q' r) => DivModP x y q r GT
 
-divMod :: forall x y q r. DivMod x y q r => x -> y -> Tuple q r
+divMod :: forall x y q r. DivMod x y q r => NumProxy x -> NumProxy y -> Tuple (NumProxy q) (NumProxy r)
 divMod _ _ = Tuple undefined undefined
 
-class Div x y z | x y -> z, x z -> y, y z -> x
+class Div (x :: Num) (y :: Num) (z :: Num) | x y -> z, x z -> y, y z -> x
 instance divNatPos :: (DivMod x y q r) => Div x y q
 
-div :: forall x y z. Div x y z => x -> y -> z
+div :: forall x y z. Div x y z => NumProxy x -> NumProxy y -> NumProxy z
 div _ _ = undefined
 
-class Mod x y r | x y -> r
+class Mod (x :: Num) (y :: Num) (r :: Num) | x y -> r
 instance modNatPos :: DivMod x y q r => Mod x y r
 
-mod :: forall x y r. Mod x y r => x -> y -> r
+mod :: forall x y r. Mod x y r => NumProxy x -> NumProxy y -> NumProxy r
 mod _ _ = undefined
 
 -- Special cases of the above
 
-class (Nat q) <= Mul10 x q | x -> q, q -> x
+class (Nat q) <= Mul10 (x :: Num) (q :: Num) | x -> q, q -> x
 instance mul10Nat :: DivMod10 x q D0 => Mul10 q x
 
-mul10 :: forall x q. Mul10 x q => x -> q
+mul10 :: forall x q. Mul10 x q => NumProxy x -> NumProxy q
 mul10 _ = undefined
 
-class (Nat i, Nat x) <= DivMod10 x i l | i l -> x, x -> i l
+class (Nat i, Nat x) <= DivMod10 (x :: Num) (i :: Num) (l :: Num) | i l -> x, x -> i l
 instance divMod10D0D0 :: DivMod10 D0 D0 D0
 else instance divMod10D1D0 :: DivMod10 D1 D0 D1
 else instance divMod10D2D0 :: DivMod10 D2 D0 D2
@@ -144,36 +152,28 @@ else instance divMod10D8x :: (Nat (D8 :* l)) => DivMod10 (D8 :* l) D8 l
 else instance divMod10D9x :: (Nat (D9 :* l)) => DivMod10 (D9 :* l) D9 l
 else instance divModIDontEvenAnymore :: (Nat (x :* l), Nat ((x :* l) :* l')) => DivMod10 ((x :* l) :* l') (x :* l) l'
 
-divMod10 :: forall x r q. DivMod10 x q r => x -> Tuple q r
+divMod10 :: forall x r q. DivMod10 x q r => NumProxy x -> Tuple (NumProxy q) (NumProxy r)
 divMod10 _ = Tuple undefined undefined
 
-class Nat x <= Div10 x q | x -> q, q -> x
+class Nat x <= Div10 (x :: Num) (q :: Num) | x -> q, q -> x
 instance div10Nat :: DivMod10 x q r => Div10 x q
 
-div10 :: forall x q. Div10 x q => x -> q
+div10 :: forall x q. Div10 x q => NumProxy x -> NumProxy q
 div10 _ = undefined
 
-class Pos d <= IsDivBy d x
+class Pos d <= IsDivBy (d :: Num) (x :: Num)
 instance isDivByPosNat :: (DivMod x d q D0) => IsDivBy d x
 
-isDivBy :: forall d x. IsDivBy d x => d -> x
+isDivBy :: forall d x. IsDivBy d x => NumProxy d -> NumProxy x
 isDivBy _ = undefined
 
 -- Exponentiation/Logarithm: TODO
 
 -- Comparison
 
-data LT
-data EQ
-data GT
+class (Nat x, Nat y) <= Trich (x :: Num) (y :: Num) (r :: Ordering) | x y -> r
 
-instance showLT :: Show LT where show _ = "LT"
-instance showEQ :: Show EQ where show _ = "EQ"
-instance showGT :: Show GT where show _ = "GT"
-
-class (Nat x, Nat y) <= Trich x y r | x y -> r
-
-trich :: forall x y r. Trich x y r => x -> y -> r
+trich :: forall x y r. Trich x y r => NumProxy x -> NumProxy y -> OProxy r
 trich _ _ = undefined
 
 instance trichD0D0 :: Trich D0 D0 EQ
@@ -306,81 +306,43 @@ instance trichD9D9 :: Trich D9 D9 EQ
 instance trichD9Dxx :: Pos (yi :* yl) => Trich D9 (yi :* yl) LT
 instance trichDxxD9 :: Pos (yi :* yl) => Trich (yi :* yl) D9 GT
 
-instance trichDxxDxx :: (Pos (xi :* xl), Pos (yi :* yl), Trich xl yl rl, Trich xi yi ri, CS ri rl r) => Trich (xi :* xl) (yi :* yl) r
+instance trichDxxDxx :: (Pos (xi :* xl), Pos (yi :* yl), Trich xl yl rl, Trich xi yi ri, Append ri rl r) => Trich (xi :* xl) (yi :* yl) r
 
-class CS r1 r2 r3 | r1 r2 -> r3
-instance csEQrr :: CS EQ r r
-instance csGTrGT :: CS GT r GT
-instance csLTrLT :: CS LT r LT
+-- Max / Min
 
-class Eq x y
-instance trichEq :: (Trich x y EQ) => Eq x y
-
-eq :: forall x y. Eq x y => x -> y -> Unit
-eq _ _ = undefined
-
-class Gt x y
-instance trichGt :: (Trich x y GT) => Gt x y
-
-gt :: forall x y. Gt x y => x -> y -> Unit
-gt _ _ = undefined
-
-class Lt x y
-instance trichLt :: (Trich x y LT) => Lt x y
-
-lt :: forall x y. Lt x y => x -> y -> Unit
-lt _ _ = undefined
-
-class GtEq x y
-instance trichGtEq :: (Succ x x', Trich x' y GT) => GtEq x y
-
-gteq :: forall x y. GtEq x y => x -> y -> Unit
-gteq _ _ = undefined
-
-class LtEq x y
-instance trichLtEq :: (Succ y y', Trich x y' LT) => LtEq x y
-
-lteq :: forall x y. LtEq x y => x -> y -> Unit
-lteq _ _ = undefined
-
-infixl 4 eq as ==
-infixl 4 gt as >
-infixl 4 lt as <
-infixl 4 gteq as >=
-infixl 4 lteq as <=
-
-class MaxP x y b r | x y b -> r
+class MaxP (x :: Num) (y :: Num) (b :: Ordering) (r :: Num) | x y b -> r
 instance maxPLT :: MaxP x y LT y
 instance maxPEQ :: MaxP x y EQ y
 instance maxPGT :: MaxP x y GT x
 
-class Max x y z | x y -> z
+class Max (x :: Num) (y :: Num) (z :: Num) | x y -> z
 instance maxRelation :: (MaxP x y b z, Trich x y b) => Max x y z
 
-max :: forall x y z. Max x y z => x -> y -> z
+max :: forall x y z. Max x y z => NumProxy x -> NumProxy y -> NumProxy z
 max _ _ = undefined
 
-class Min x y z | x y -> z
+class Min (x :: Num) (y :: Num) (z :: Num) | x y -> z
 instance minRelation :: (MaxP y x b z, Trich x y b) => Min x y z
 
-min :: forall x y z. Min x y z => x -> y -> z
+min :: forall x y z. Min x y z => NumProxy x -> NumProxy y -> NumProxy z
 min _ _ = undefined
 
-class (Nat x, Nat y, Nat gcd) <= GCD x y gcd | x y -> gcd
+class (Nat x, Nat y, Nat gcd) <= GCD (x :: Num) (y :: Num) (gcd :: Num) | x y -> gcd
 instance gcdRelation :: (Nat x, Nat y, Trich x y cmp, IsZero y yz, GCDP x y yz cmp gcd) => GCD x y gcd
 
-class (Nat x, Nat y, Nat gcd) <= GCDP x y yz cmp gcd | x y yz cmp -> gcd
+class (Nat x, Nat y, Nat gcd) <= GCDP x y (yz :: Boolean) (cmp :: Ordering) gcd | x y yz cmp -> gcd
 instance gcdpD0 :: Nat x => GCDP x D0 True cmp D0
 instance gcdpXYLT :: (Nat x, Nat y, GCD y x gcd) => GCDP x y False LT gcd
 instance gcdpXX :: Nat x => GCDP x x False EQ x
 instance gcdpXYGT :: (Nat x, Nat y, Sub x y x', GCD x' y gcd) => GCDP x y False GT gcd
 
-gcd :: forall x y z. GCD x y z => x -> y -> z
+gcd :: forall x y z. GCD x y z => NumProxy x -> NumProxy y -> NumProxy z
 gcd _ _ = undefined
+
 
 -- Internal
 
-class IsZero x r | x -> r
+class IsZero (x :: Num) (r :: Boolean) | x -> r
 instance isZeroD0 :: IsZero D0 True
 instance isZeroD1 :: IsZero D1 False
 instance isZeroD2 :: IsZero D2 False
