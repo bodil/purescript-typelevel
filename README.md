@@ -8,11 +8,17 @@ This package is a direct port of the Haskell [type-level](https://github.com/for
 
 ## Type Level Numbers
 
-This package provides a way to represent type level natural numbers and booleans, with a useful set of operations for both.
+This package provides a way to represent type level natural natural and whole numbers with a useful set of operations for them.
 
-A natural number is expressed at the type level using uninhabited types with a `D` prefixed to the number: `D0`, `D1`, `D2` etc. You can use the `:*` type operator to combine digits: eg. `D1 :* D3 :* D3 :* D7` makes the number 1337. Aliases are provided for two digit numbers: `D10`, `D11` etc. up to `D99`. Values of each type are also provided, with the lower case prefix `d`, so: `d0`, `d1`, `d2` etc. up to `d99`.
+A natural number is expressed at the type level using symbols (type level strings). For example `NProxy "2"` represents 2 and `NProxy "1337"` represents 1337. Values of each type can be created using `d2 = NProxy :: NProxy "2"` or simply `d2 = NProxy::_ "2"`.
 
-Two type classes are provided acting as sets: `Nat` is the set of natural numbers (zero to infinity), and `Pos` is the set of positive numbers (1 to infinity). `Nat` defines the function `toInt`, which converts type level numbers to the value level. To move integer values to the type level, use the `reifyInt` function (which will throw a runtime exception for values which are not natural numbers).
+Two type classes are provided acting as sets: `Nat` is the set of natural numbers (zero to infinity), and `Pos` is the set of positive numbers (1 to infinity). `Nat` defines the function `reflectInt`, which converts type level numbers to the value level. To move integer values to the type level, use the `reifyInt` function (which will throw a runtime exception for values which are not natural numbers).
+
+### Whole Numbers
+
+`IProxy "-20` represents the whole number -20 and `IProxy "20"` represents the whole number 20.
+
+### Applying Operations
 
 You can express arithmetic operators as type class constraints on type level numbers. For instance, to express that a type `c` is the sum of types `a` and `b`, you would use the type signature `∀ a b c. (Nat a, Nat b, Add a b c) ⇒ a → b → c`. To express that a type `a` must be less than another type `b`, you would use the type signature `∀ a b. (Nat a, Nat b, Lt a b) ⇒ a → b`.
 
